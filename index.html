@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FADE — Premium Barbershop</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --black: #0a0a0a;
+    --off-black: #111111;
+    --card-bg: #161616;
+    --border: rgba(255,255,255,0.08);
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --white: #f5f2ee;
+    --muted: rgba(245,242,238,0.45);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.5rem 4rem;
+    background: rgba(10,10,10,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted);
+    font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-book {
+    background: var(--gold); color: var(--black);
+    padding: 0.6rem 1.6rem; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 0.75rem;
+    letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 55%; height: 100%;
+    background: linear-gradient(135deg, transparent 30%, rgba(201,168,76,0.04) 100%);
+    pointer-events: none;
+  }
+  .hero-line {
+    position: absolute; top: 0; right: 40%;
+    width: 1px; height: 100%;
+    background: linear-gradient(to bottom, transparent, var(--border) 30%, var(--border) 70%, transparent);
+  }
+  .hero-content { max-width: 600px; position: relative; z-index: 1; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 2rem;
+  }
+  .hero-tag::before {
+    content: ''; display: block;
+    width: 32px; height: 1px; background: var(--gold);
+  }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 10vw, 8.5rem);
+    line-height: 0.9;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.5rem;
+  }
+  h1 span { color: var(--gold); }
+  .hero-sub {
+    font-size: 1rem; color: var(--muted);
+    max-width: 420px; margin-bottom: 3rem; line-height: 1.8;
+  }
+  .hero-btns { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    background: var(--gold); color: var(--black);
+    padding: 1rem 2.5rem; border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-weight: 500;
+    font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-ghost {
+    background: transparent; color: var(--white);
+    padding: 1rem 2rem; border: 1px solid var(--border); cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase;
+    transition: border-color 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.3); }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 5rem;
+    padding-top: 2.5rem; border-top: 1px solid var(--border);
+  }
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem; color: var(--white); letter-spacing: 0.05em;
+  }
+  .stat-num span { color: var(--gold); }
+  .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; }
+
+  .hero-visual {
+    position: absolute; right: 4rem; top: 50%; transform: translateY(-50%);
+    width: 380px; height: 520px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 2rem; overflow: hidden;
+  }
+  .hero-visual::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 20px,
+      rgba(255,255,255,0.012) 20px,
+      rgba(255,255,255,0.012) 21px
+    );
+  }
+  .hero-visual-tag {
+    font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 0.5rem;
+  }
+  .hero-visual-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem; letter-spacing: 0.08em;
+  }
+  .hero-visual-sub { font-size: 0.8rem; color: var(--muted); }
+
+  section { padding: 6rem 4rem; }
+
+  .section-label {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .section-label::after {
+    content: ''; flex: 1; max-width: 40px;
+    height: 1px; background: var(--gold);
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 0.04em; margin-bottom: 3rem;
+  }
+
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border);
+  }
+  .service-card {
+    background: var(--off-black);
+    padding: 2.5rem 2rem;
+    transition: background 0.25s;
+    cursor: default;
+  }
+  .service-card:hover { background: var(--card-bg); }
+  .service-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.9rem; color: var(--gold);
+    letter-spacing: 0.15em; margin-bottom: 1.5rem;
+  }
+  .service-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem; letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+  }
+  .service-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+  .service-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem; color: var(--gold); letter-spacing: 0.05em;
+  }
+
+  .barbers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .barber-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    padding: 2rem;
+  }
+  .barber-avatar {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--off-black); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem;
+    color: var(--gold); letter-spacing: 0.1em;
+    margin-bottom: 1.25rem;
+  }
+  .barber-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem; letter-spacing: 0.06em; margin-bottom: 0.25rem;
+  }
+  .barber-role { font-size: 0.75rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem; }
+  .barber-bio { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+
+  .hours-booking {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+    align-items: start;
+  }
+  .hours-list { list-style: none; }
+  .hours-list li {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 0; border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .hours-list li:first-child { border-top: 1px solid var(--border); }
+  .hours-list .day { color: var(--muted); }
+  .hours-list .time { color: var(--white); }
+  .hours-list .closed { color: rgba(245,242,238,0.2); }
+
+  .booking-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .form-group input, .form-group select {
+    background: var(--card-bg); border: 1px solid var(--border);
+    color: var(--white); padding: 0.85rem 1rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    outline: none; width: 100%;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+  .form-group select option { background: var(--card-bg); }
+
+  footer {
+    padding: 3rem 4rem;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem; color: var(--gold); letter-spacing: 0.15em;
+  }
+  .footer-copy { font-size: 0.78rem; color: var(--muted); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-content > * { animation: fadeUp 0.7s ease both; }
+  .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero-content > *:nth-child(4) { animation-delay: 0.4s; }
+  .hero-content > *:nth-child(5) { animation-delay: 0.5s; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">FADE</div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#booking">Hours</a></li>
+  </ul>
+  <button class="nav-book">Book Now</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-line"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Est. 2018 — Waco, TX</div>
+    <h1>Sharp<br>Cuts.<br><span>Clean</span><br>Lines.</h1>
+    <p class="hero-sub">Premium barbering for the modern man. Walk in confident, walk out sharper. Every cut is a statement.</p>
+    <div class="hero-btns">
+      <button class="btn-primary">Book Your Cut</button>
+      <button class="btn-ghost">View Services</button>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">6<span>+</span></div>
+        <div class="stat-label">Years Open</div>
+      </div>
+      <div>
+        <div class="stat-num">3<span>K</span></div>
+        <div class="stat-label">Clients Served</div>
+      </div>
+      <div>
+        <div class="stat-num">4.9<span>★</span></div>
+        <div class="stat-label">Avg Rating</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-visual-tag">Featured Cut</div>
+    <div class="hero-visual-title">Skin Fade + Taper</div>
+    <div class="hero-visual-sub">Starting at $35</div>
+  </div>
+</section>
+
+<section id="services" style="background: var(--off-black);">
+  <div class="section-label">What We Offer</div>
+  <div class="section-title">Our Services</div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-name">Skin Fade</div>
+      <p class="service-desc">Clean skin fade with a taper blend. The classic that never goes out of style.</p>
+      <div class="service-price">$35</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-name">Full Cut + Beard</div>
+      <p class="service-desc">Complete haircut paired with a precise beard trim and lineup. The full treatment.</p>
+      <div class="service-price">$55</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-name">Lineup Only</div>
+      <p class="service-desc">Sharp edge-up on your hairline, beard, and sideburns. Quick but precise.</p>
+      <div class="service-price">$20</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <div class="service-name">Beard Sculpt</div>
+      <p class="service-desc">Full beard shaping, trimming, and conditioning. Define your look.</p>
+      <div class="service-price">$30</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">05</div>
+      <div class="service-name">Hot Towel Shave</div>
+      <p class="service-desc">Classic straight razor shave with hot towel treatment. Old school luxury.</p>
+      <div class="service-price">$45</div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">06</div>
+      <div class="service-name">Kids Cut</div>
+      <p class="service-desc">Patient, clean cuts for kids under 12. Keep them looking fresh too.</p>
+      <div class="service-price">$25</div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="section-label">The Barbers</div>
+  <div class="section-title">Meet The Team</div>
+  <div class="barbers-grid">
+    <div class="barber-card">
+      <div class="barber-avatar">MJ</div>
+      <div class="barber-name">Marcus James</div>
+      <div class="barber-role">Master Barber</div>
+      <p class="barber-bio">10+ years behind the chair. Specialty in fades and natural hair. Known for making every client feel at home.</p>
+    </div>
+    <div class="barber-card">
+      <div class="barber-avatar">DT</div>
+      <div class="barber-name">Darius Tate</div>
+      <div class="barber-role">Senior Barber</div>
+      <p class="barber-bio">Beard specialist and fade artist. Certified in razor work. If precision is your thing, Darius is your guy.</p>
+    </div>
+    <div class="barber-card">
+      <div class="barber-avatar">KW</div>
+      <div class="barber-name">Kevin Wade</div>
+      <div class="barber-role">Barber</div>
+      <p class="barber-bio">Trained in Waco, rising fast. Specializes in taper fades and creative designs. Young energy, sharp hands.</p>
+    </div>
+  </div>
+</section>
+
+<section id="booking" style="background: var(--off-black);">
+  <div class="section-label">Plan Your Visit</div>
+  <div class="section-title">Hours & Booking</div>
+  <div class="hours-booking">
+    <div>
+      <ul class="hours-list">
+        <li><span class="day">Monday</span><span class="closed">Closed</span></li>
+        <li><span class="day">Tuesday – Friday</span><span class="time">9:00 AM – 7:00 PM</span></li>
+        <li><span class="day">Saturday</span><span class="time">8:00 AM – 6:00 PM</span></li>
+        <li><span class="day">Sunday</span><span class="time">10:00 AM – 4:00 PM</span></li>
+      </ul>
+      <p style="margin-top: 2rem; font-size: 0.83rem; color: var(--muted); line-height: 1.8;">
+        Walk-ins welcome based on availability.<br>
+        Booking ahead guarantees your spot.
+      </p>
+    </div>
+    <div>
+      <div class="booking-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="John">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="Doe">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="text" placeholder="(555) 000-0000">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Service</label>
+            <select>
+              <option>Skin Fade — $35</option>
+              <option>Full Cut + Beard — $55</option>
+              <option>Lineup Only — $20</option>
+              <option>Beard Sculpt — $30</option>
+              <option>Hot Towel Shave — $45</option>
+              <option>Kids Cut — $25</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Barber</label>
+            <select>
+              <option>No Preference</option>
+              <option>Marcus James</option>
+              <option>Darius Tate</option>
+              <option>Kevin Wade</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date">
+          </div>
+          <div class="form-group">
+            <label>Time</label>
+            <select>
+              <option>9:00 AM</option>
+              <option>10:00 AM</option>
+              <option>11:00 AM</option>
+              <option>12:00 PM</option>
+              <option>1:00 PM</option>
+              <option>2:00 PM</option>
+              <option>3:00 PM</option>
+              <option>4:00 PM</option>
+              <option>5:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" style="margin-top: 0.5rem; padding: 1.1rem;">Confirm Booking</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">FADE</div>
+  <div class="footer-copy">© 2026 Fade Barbershop · Waco, TX</div>
+</footer>
+
+</body>
+</html>
